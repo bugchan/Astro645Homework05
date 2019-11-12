@@ -11,13 +11,13 @@ import matplotlib.pyplot as plt
 def setupPlot(singleColumn):
 
   if singleColumn:
-    fontsize=10
-    width=6.9
-    linewidth=1
+    width=6.9    
   else:
-    fontsize=8
     width=3.39
-    linewidth=0.8
+
+  fontsize=8  
+  linewidth=0.4
+  markersize=1
 
   height=width*(np.sqrt(5.)-1.)/2.
   params = {'axes.labelsize': fontsize,
@@ -27,9 +27,10 @@ def setupPlot(singleColumn):
             'xtick.labelsize': fontsize,
             'ytick.labelsize': fontsize,
             'lines.linewidth': linewidth,
-            'grid.linewidth' : linewidth*.8,
+            'grid.linewidth' : linewidth*.7,
             'axes.axisbelow' : True,
             'pgf.rcfonts' : False,
+            'lines.markersize' : markersize,
             }
   plt.rcParams.update(params)
   return width,height

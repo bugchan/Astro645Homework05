@@ -24,6 +24,43 @@ def energy(z1,z2):
   E=(1/2)*z2**2+(1-np.cos(z1))
   return E
 
+def calcUs(rU,q,p,bArray):
+  start = time.time()
+  #rU=1/2
+  thetaU=np.linspace(0,2*np.pi,32)
+  q0=rU*np.cos(thetaU)+q
+  p0=rU*np.sin(thetaU)+p
+  lenq=len(q0)
+  IVb=np.concatenate((q0.reshape(lenq,1),
+                     p0.reshape(lenq,1)),
+                    axis=1)
+  #tau=2*np.pi
+  #bArray=np.array([.25,.5,1])*tau
+  #NArray=np.round(bArray/h)
+  qfinalArray=np.zeros((len(bArray),lenq))
+  pfinalArray=np.zeros((len(bArray),lenq))
+  
+  
+  for j in range(len(bArray)):
+    N=np.int(np.ceil((bArray[j]/h)))
+    #tArray=np.zeros((lenq,N+1))
+    qArray=np.zeros((lenq,N+1))
+    pArray=np.zeros((lenq,N+1))
+    
+    for i in range(lenq):
+      t,q,p=NI.RK4(dvdt,a,bArray[j],h,IVb[i],dim=1)
+      #saving values of all 32 orbits
+      qArray[i]=q[:,0]
+      pArray[i]=p[:,0]
+    #Array of the final values of each value of time bArray
+    qfinalArray[j]=qArray[:,-1]
+    pfinalArray[j]=pArray[:,-1]
+  
+  
+  end = time.time()
+  print('Time to run: %0.2f'%(end - start))
+  return IVb,qArray,pArray,qfinalArray,pfinalArray
+
 #%%
 
 Ecrit=2 #
@@ -47,40 +84,50 @@ t,thetaSep,thetaDotSep=NI.RK4(dvdt,a,b,h,IV[2],dim=1)
 end = time.time()
 print('Time to run: %0.2f'%(end - start))
 
-#%%
-start = time.time()
-rU=1/2
-thetaU=np.linspace(0,2*np.pi,32)
-q0=rU*np.cos(thetaU)
-p0=rU*np.sin(thetaU)+1
-lenq=len(q0)
-IVb=np.concatenate((q0.reshape(lenq,1),
-                   p0.reshape(lenq,1)),
-                  axis=1)
+#%% 2.D q,p=0,1
+#start = time.time()
+#rU=1/2
+#thetaU=np.linspace(0,2*np.pi,32)
+#q0=rU*np.cos(thetaU)
+#p0=rU*np.sin(thetaU)+1
+#lenq=len(q0)
+#IVb=np.concatenate((q0.reshape(lenq,1),
+#                   p0.reshape(lenq,1)),
+#                  axis=1)
+#tau=2*np.pi
+#bArray=np.array([.25,.5,1])*tau
+#NArray=np.round(bArray/h)
+#qfinalArray=np.zeros((len(bArray),lenq))
+#pfinalArray=np.zeros((len(bArray),lenq))
+#
+#for j in range(len(bArray)):
+#  N=np.int(np.ceil((bArray[j]/h)))
+#  tArray=np.zeros((lenq,N+1))
+#  qArray=np.zeros((lenq,N+1))
+#  pArray=np.zeros((lenq,N+1))
+#  
+#  for i in range(lenq):
+#    t,q,p=NI.RK4(dvdt,a,bArray[j],h,IVb[i],dim=1)
+#    #saving values of all 32 orbits
+#    qArray[i]=q[:,0]
+#    pArray[i]=p[:,0]
+#Array of the final values of each value of time bArray
+#  qfinalArray[j]=qArray[:,-1]
+#  pfinalArray[j]=pArray[:,-1]
+#
+#end = time.time()
+#print('Time to run: %0.2f'%(end - start))
+
+#%% 2.D q,p=0,1
+
 tau=2*np.pi
-bArray=np.array([.25,.5,1])*tau
-N=int(round(bArray/h))
-qfinalArray=np.zeros((len(bArray),N+1))
-pfinalArray=np.zeros((len(bArray),N+1))
+bArrayd=np.array([.25,.5,1])*tau
+IVb,qArray,pArray,qfinalArray,pfinalArray=calcUs(rU=1/2,q=0,p=1,bArray=bArrayd)
 
-
-for j in range(len(bArray)):
-  N=np.int(np.round(bArray[j]/h))
-  tArray=np.zeros((lenq,N+1))
-  qArray=np.zeros((lenq,N+1))
-  pArray=np.zeros((lenq,N+1))
-  
-  for i in range(lenq):
-    t,q,p=NI.RK4(dvdt,a,bArray[j],h,IVb[i],dim=1)
-    tArray[i]=t
-    qArray[i]=q[:,0]
-    pArray[i]=p[:,0]
-  
-  qfinalArray[j]=qArray[:,-1]
-  pfinalArray[j]=pArray[:,-1]
-
-end = time.time()
-print('Time to run: %0.2f'%(end - start))
+#%% 2.E q,p=0,1.5
+bArraye=np.array([.2,.4,.75])*tau
+Part2e=calcUs(rU=1/2,q=0,p=1,bArray=bArraye)
+IVb,qArray,pArray,qfinalArray,pfinalArray=Part2e
 
 #%%
 width,height=SP.setupPlot(singleColumn=False)
@@ -101,21 +148,22 @@ ax1.legend()
 fig1.tight_layout()
 fig1.savefig('PendulumPhaseSpace.pdf')
 
-#%%
-width,height=SP.setupPlot(singleColumn=True)
+#%% PendulumPhaseSpaceUs
+width,height=SP.setupPlot(singleColumn=False)
 grid = plt.GridSpec(1,1)
 fig2 = plt.figure(figsize=(width,height))
 
 ax2 = fig2.add_subplot(grid[0,0])
-for i in range(lenq):
-  ax2.plot(qArray[i],pArray[i])
-  ax2.plot(IVb[i,0],IVb[i,1],'o')
+ax2.plot(qArray.T,pArray.T,'k-')
+ax2.plot(IVb[:,0],IVb[:,1],'o',label=r'$\tau=0$')
+for i in range(3):
+  ax2.plot(qfinalArray[i,:],pfinalArray[i,:],'o',label=r'$\tau=$%1.2f'%bArraye[i])
 ax2.set_xlabel(r'$\theta$')
 ax2.set_xlim(-np.pi,np.pi)
 ax2.set_ylabel(r'$\dot{\theta}$')
 #ax1.set_title('Leapfrog Integration')
 ax2.grid()
-#ax2.legend()
+ax2.legend()
 
 fig2.tight_layout()
 fig2.savefig('PendulumPhaseSpaceUs.pdf')
