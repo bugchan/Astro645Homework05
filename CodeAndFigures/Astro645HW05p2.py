@@ -11,7 +11,6 @@ import NumericIntegrations as NI
 import SetupPlots as SP
 import pandas as pd
 import time
-import scipy.constants as constants
 
 #%% Definitions
 def dvdt(t,z1,z2):
@@ -36,10 +35,11 @@ def calcUs(rU,q,p,bArray):
                     axis=1)
   qfinalArray=np.zeros((len(bArray),lenq))
   pfinalArray=np.zeros((len(bArray),lenq))
+  qfinalArray[0]=q0
+  pfinalArray[0]=p0
   
-  for j in range(len(bArray)):
+  for j in np.arange(1,len(bArray)):
     N=np.int(np.ceil((bArray[j]/h)))
-    #tArray=np.zeros((lenq,N+1))
     qArray=np.zeros((lenq,N+1))
     pArray=np.zeros((lenq,N+1))
     
@@ -48,7 +48,7 @@ def calcUs(rU,q,p,bArray):
       #saving values of all 32 orbits
       qArray[i]=q[:,0]
       pArray[i]=p[:,0]
-  #Array of the final values of each value of time bArray
+#Array of the final values of each value of time bArray
     qfinalArray[j]=qArray[:,-1]
     pfinalArray[j]=pArray[:,-1]
   
@@ -56,9 +56,19 @@ def calcUs(rU,q,p,bArray):
   print('Time to run: %0.2f'%(end - start))
   return IVb,qArray,pArray,qfinalArray,pfinalArray
 
+def calcArea(qArray,pArray):
+  n=len(qArray)
+  A=np.zeros(n)
+  for i in np.arange(n):
+    q=qArray[i]
+    p=pArray[i]
+    A[i]=.5*(q*np.roll(p,-1)-p*np.roll(q,-1)).sum()
+  print(A)
+  return A
+
 #%%
 
-Ecrit=2 #
+Ecrit=2
 indexNames=['Rotation','Libration','Separatrix']
 z1=np.array([-3*np.pi/2,-np.pi/2,-3*np.pi/2])
 z2=np.array([np.sqrt(2)+.5,np.sqrt(2)-.5,np.sqrt(2)])
@@ -101,25 +111,29 @@ fig1.savefig('PendulumPhaseSpace.pdf')
 l=1
 omega=1#constants.g/l
 tau0=2*np.pi/omega
-bArray2d=np.array([.25,.5,1])
+bArray2d=np.array([0,.25,.5,1])
 tau2d=bArray2d*tau0
-P2d=calcUs(rU=1/2,q=0,p=1,bArray=tau2d)
+qp2d=(0,1)
+P2d=calcUs(rU=1/2,q=qp2d[0],p=qp2d[1],bArray=tau2d)
 IV2d,qA2d,pA2d,qfinalA2d,pfinalA2d=P2d
 
+A2d=calcArea(qfinalA2d,pfinalA2d)
+
 #%% 2.E q,p=0,1.5
-bArray2e=np.array([.2,.4,.75])
+bArray2e=np.array([0,.2,.4,.75])
 tau2e=bArray2e*tau0
-P2e=calcUs(rU=1/2,q=0,p=1.5,bArray=tau2e)
+qp2e=(0,1.5)
+P2e=calcUs(rU=1/2,q=qp2e[0],p=qp2e[1],bArray=tau2e)
 IV2e,qA2e,pA2e,qfinalA2e,pfinalA2e=P2e
+A2e=calcArea(qfinalA2e,pfinalA2e)
 
 #%% 2.F q,p=0,2
-bArray2f=np.array([.1,.25,.5])
+bArray2f=np.array([0,.1,.25,.5])
 tau2f=bArray2f*tau0
-P2f=calcUs(rU=1/2,q=0,p=2,bArray=tau2f)
+qp2f=(0,2)
+P2f=calcUs(rU=1/2,q=qp2f[0],p=qp2f[1],bArray=tau2f)
 IV2f,qA2f,pA2f,qfinalA2f,pfinalA2f=P2f
-
-#%% Area of 2d
-
+A2f=calcArea(qfinalA2f,pfinalA2f)
 
 #%% Plot 2d
 #width,height=SP.setupPlot(singleColumn=False)
@@ -128,16 +142,14 @@ fig2 = plt.figure(figsize=(width,height))
 
 ax2 = fig2.add_subplot(grid[0,0])
 ax2.plot(qA2d.T,pA2d.T,'k-')
-ax2.plot(IV2d[:,0],IV2d[:,1],'-o',label=r'$\tau=0$')
-for i in range(3):
+for i in range(4):
   ax2.plot(qfinalA2d[i,:],pfinalA2d[i,:],'-o',
            label=r'$\tau=%1.2f \tau_0$'%bArray2d[i])
-ax2.set_xlabel(r'$\theta$')
+ax2.set_xlabel(r'$z_1$')
 #ax2.set_xlim(-np.pi,2.5)
-ax2.set_ylabel(r'$\dot{\theta}$')
+ax2.set_ylabel(r'$z_2$')
 ax2.grid()
 ax2.legend()
-#ax2.set_aspect('equal')
 
 fig2.tight_layout()
 fig2.savefig('PendulumPhaseSpaceUs2d.pdf')
@@ -149,16 +161,14 @@ fig3 = plt.figure(figsize=(width,height))
 
 ax3 = fig3.add_subplot(grid[0,0])
 ax3.plot(qA2e.T,pA2e.T,'k-')
-ax3.plot(IV2e[:,0],IV2e[:,1],'-o',label=r'$\tau=0$')
-for i in range(3):
+for i in range(4):
   ax3.plot(qfinalA2e[i,:],pfinalA2e[i,:],'-o',
            label=r'$\tau=%1.2f \tau_0$'%bArray2e[i])
-ax3.set_xlabel(r'$\theta$')
+ax3.set_xlabel(r'$z_1$')
 #ax3.set_xlim(-np.pi,np.pi)
-ax3.set_ylabel(r'$\dot{\theta}$')
+ax3.set_ylabel(r'$z_2$')
 ax3.grid()
 ax3.legend()
-#ax3.set_aspect('equal')
 
 fig3.tight_layout()
 fig3.savefig('PendulumPhaseSpaceUs2e.pdf')
@@ -170,30 +180,48 @@ fig4 = plt.figure(figsize=(width,height))
 
 ax4 = fig4.add_subplot(grid[0,0])
 ax4.plot(qA2f.T,pA2f.T,'k-')
-ax4.plot(IV2f[:,0],IV2f[:,1],'-o',label=r'$\tau=0$')
-for i in range(3):
+for i in range(4):
   ax4.plot(qfinalA2f[i,:],pfinalA2f[i,:],'-o',
            label=r'$\tau=%1.2f \tau_0$'%bArray2f[i])
-ax4.set_xlabel(r'$\theta$')
+ax4.set_xlabel(r'$z_1$')
 #ax4.set_xlim(-np.pi,np.pi)
-ax4.set_ylabel(r'$\dot{\theta}$')
+ax4.set_ylabel(r'$z_2$')
 ax4.grid()
 ax4.legend()
-#ax4.set_aspect('equal')
 
 fig4.tight_layout()
 fig4.savefig('PendulumPhaseSpaceUs2f.pdf')
 
+#%% Plot 2g
+#width,height=SP.setupPlot(singleColumn=False)
+#grid = plt.GridSpec(1,1)
+fig5 = plt.figure(figsize=(width,height))
+
+ax5 = fig5.add_subplot(grid[0,0])
+ax5.plot(A2d,'-o',
+         label=r'(p,q)=(%1.1f,%1.1f)'%(qp2d[0],qp2d[1]))
+ax5.plot(A2e,'-o',
+         label=r'(p,q)=(%1.1f,%1.1f)'%(qp2e[0],qp2e[1]))
+ax5.plot(A2f,'-o',
+         label=r'(p,q)=(%1.1f,%1.1f)'%(qp2f[0],qp2f[1]))
+ax5.set_ylabel('Area')
+ax5.grid()
+ax5.legend()
+
+fig5.tight_layout()
+fig5.savefig('PendulumPhaseSpaceAreas.pdf')
+
 #%% Save Data to csv file
 
-colNames=np.array(['$z_1$'    ,'$z_2$','Energy'])
+colNames=np.array(['$z_1$','$z_2$','Energy'])
 row1=np.array([z1[0],z2[0],energy(z1[0],z2[0])])
 row2=np.array([z1[1],z2[1],energy(z1[1],z2[1])])
 row3=np.array([z1[2],z2[2],energy(z1[2],z2[2])])
 
-rows=[row1, row2,row3]
+rows=[row1,row2,row3]
 
-df = pd.DataFrame(rows,columns=colNames,index=indexNames)
+df = pd.DataFrame(rows,columns=colNames,
+                  index=indexNames)
 
 with open('PendulumIV.tex','w') as tf:
     tf.write(df.to_latex(float_format='%2.2f',
