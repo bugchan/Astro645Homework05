@@ -10,16 +10,75 @@ and
     V=mgl(1-\cos\theta)
 \end{equation}
 
-\begin{enumerate}
+\subsection{}
+%Derive the Hamiltonian and write down Hamilton’s equations.
+Starting from the Lagrangian, 
+\begin{equation*}
+    \mathcal{L}(\theta,\dot{\theta},t)\equiv T-V = \frac{1}{2}ml^2\dot{\theta}^2 - mgl(1 - \cos\theta),
+\end{equation*}
+we can find the generalized momentum by
+\begin{align*}
+    p\equiv\frac{\partial\mathcal{L}}{\partial\dot{q}}=ml^2\dot{\theta}.
+\end{align*}
+Then the Hamiltonian is
+\begin{align*}
+    \mathcal{H}&\equiv T+V\\
+    \mathcal{H}&=\frac{1}{2}ml^2\dot{\theta}^2+mgl(1-\cos\theta)\\
+    \mathcal{H}&=\frac{1}{2}\frac{p^2}{ml^2}+mgl(1-\cos\theta).
+\end{align*}
 
-\item Derive the Hamiltonian and write down Hamilton’s equations.
-\item Transform these equations to a non-dimensional set of variables $(q,p)\to(z_1,z_2)$ such that $\tau=\omega t$ where $\omega^2=g/l$ and the dimensionless energy is:
-\begin{equation}
-    \epsilon\equiv\frac{E}{mgl}=\frac{1}{2}z_2^2+(1-\cos z_1)
-\end{equation}
-Show that $\tau_0=2\pi/\omega$ is the period of small oscilations  for this system.
-\item Sketch the phase portrait in these units, paying special attention to
-the three domains: 1) $\epsilon<2$, the oscillation  or libration regime; 2) $\epsilon>2$, the rotation regime 3)$\epsilon=2$, the critical infinite period, the separatrix.
+Hamilton's equations are:
+\begin{align*}
+    \dot{p}&\equiv-\frac{\partial\mathcal{H}}{\partial\theta}=-mgl\sin\theta\\
+    \dot{q}&\equiv\frac{\partial\mathcal{H}}{\partial p}=\frac{p}{ml^2}=\dot{\theta}
+\end{align*}
+
+\subsection{}
+%Transform these equations to a non-dimensional set of variables $(q,p)\to(z_1,z_2)$ such that $\tau=\omega t$ where $\omega^2=g/l$ and the dimensionless energy is:
+% \begin{equation}
+%     \varepsilon\equiv\frac{E}{mgl}=\frac{1}{2}z_2^2+(1-\cos z_1)
+% \end{equation}
+% Show that $\tau_0=2\pi/\omega$ is the period of small oscillations  for this system.
+From the dimensionless energy $\varepsilon=E/mgl$ 
+\begin{align*}
+    \varepsilon&=\frac{1}{mgl}\left[\frac{1}{2}ml^2\dot{\theta}^2+mgl(1-\cos\theta)\right]\\
+    &=\frac{1}{2}\frac{l}{g}\dot{\theta} + (1-\cos\theta),
+\end{align*}
+we can find the dimensionless variables as
+\begin{align*}
+    z_1\equiv\theta\\
+    z_2\equiv\frac{l}{g}\dot{\theta}=\frac{\dot{\theta}}{\omega^2}
+\end{align*}
+where $\omega^2=g/l$.
+
+Knowing that the equation of motion for this system is 
+\begin{equation*}
+    \Ddot{\theta}=-\frac{g}{l}\sin\theta
+\end{equation*}
+we can find that the solution for this differential equation in the small angle approximation will be given by
+\begin{equation*}
+\frac{dz_2}{d\tau}=\frac{d}{dt}
+\frac{\Ddot{\theta}}{\omega^2}=    
+\end{equation*}
+
+
+then, we can show that
+$\tau_0=2\pi/\omega$.
+
+\subsection{}
+%Sketch the phase portrait in these units, paying special attention to
+% the three domains: 1) $\varepsilon<2$, the oscillation  or libration regime; 2) $\varepsilon>2$, the rotation regime 3)$\varepsilon=2$, the critical infinite period, the separatrix.
+
+\begin{figure}
+    \centering
+    \includegraphics{Code}
+    \caption{Caption}
+    \label{fig:my_label}
+\end{figure}
+
+
+
+\begin{enumerate}
 \item Consider a disk-like domain of initial configurations $U_s$ enclosed
 within the circle centered at $(q,p)=(z_1,z_2)=(0,1)$ with radius
 of $1/2$ in these units. See Fig. 1 for a plot of these initial conditions. Compute the evolution of the disk from $\tau=0$ to each of $\tau=0.25\tau_0,0.5\tau_0,\mathrm{and}\tau_0$.
