@@ -186,17 +186,16 @@ fig4.savefig('PendulumPhaseSpaceUs2f.pdf')
 
 #%% Save Data to csv file
 
-#names=np.array(['x'    ,'y'   , '$v_x$','$v_y$','Time'])
-#indexNames=['Box Orbit','Tube Orbit ','Box Orbit 2']
-#row1=np.array([x10[0],x10[1],v10[0],v10[1],B])
-#row2=np.array([x20[0],x20[1],v20[0],v20[1],B])
-#row3=np.array([x30[0],x30[1],v30[0],v30[1],B])
-#
-#rows=[row1, row2,row3]
-#
-#df = pd.DataFrame(rows,columns=names,index=indexNames)
-#
-#with open('LogPotentialIV.tex','w') as tf:
-#    tf.write(df.to_latex(float_format='%2.2f',
-#                         index=True,
-#                         escape=False))
+colNames=np.array(['$z_1$'    ,'$z_2$','Energy'])
+row1=np.array([z1[0],z2[0],energy(z1[0],z2[0])])
+row2=np.array([z1[1],z2[1],energy(z1[1],z2[1])])
+row3=np.array([z1[2],z2[2],energy(z1[2],z2[2])])
+
+rows=[row1, row2,row3]
+
+df = pd.DataFrame(rows,columns=colNames,index=indexNames)
+
+with open('PendulumIV.tex','w') as tf:
+    tf.write(df.to_latex(float_format='%2.2f',
+                         index=True,
+                         escape=False))
