@@ -54,6 +54,7 @@ where $\omega^2=g/l$.
 Knowing that the equation of motion for this system is 
 \begin{equation*}
     \Ddot{\theta}=-\frac{g}{l}\sin\theta
+    \label{eq:pendEqMotion}
 \end{equation*}
 we can find that the solution for this differential equation in the small angle approximation will be given by
 \begin{equation*}
@@ -71,10 +72,11 @@ $\tau_0=2\pi/\omega$.
 
 \begin{figure}
     \centering
-    \includegraphics{Code}
-    \caption{Caption}
-    \label{fig:my_label}
+    \includegraphics{CodeAndFigures/PendulumPhaseSpace.pdf}
+    \caption{Phase Space of a pendulum in rotation, libration and separatrix.}
+    \label{fig:pendPhaseSpace}
 \end{figure}
+We can integrate the pendulum's equation of motion \ref{eq:pendEqMotion} using a 4th order Runge-Kutta and the initial conditions listed in table
 
 
 
