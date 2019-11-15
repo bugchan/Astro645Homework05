@@ -11,6 +11,7 @@ import NumericIntegrations as NI
 import SetupPlots as SP
 import pandas as pd
 import time
+import scipy.constants as constants
 
 #%% Definitions
 def dvdt(t,z1,z2):
@@ -97,20 +98,28 @@ fig1.tight_layout()
 fig1.savefig('PendulumPhaseSpace.pdf')
 
 #%% 2.D q,p=0,1
-tau0=2*np.pi
-bArray2d=np.array([.25,.5,1])*tau0
-P2d=calcUs(rU=1/2,q=0,p=1,bArray=bArray2d)
+l=1
+omega=1#constants.g/l
+tau0=2*np.pi/omega
+bArray2d=np.array([.25,.5,1])
+tau2d=bArray2d*tau0
+P2d=calcUs(rU=1/2,q=0,p=1,bArray=tau2d)
 IV2d,qA2d,pA2d,qfinalA2d,pfinalA2d=P2d
 
 #%% 2.E q,p=0,1.5
-bArray2e=np.array([.2,.4,.75])*tau0
-P2e=calcUs(rU=1/2,q=0,p=1.5,bArray=bArray2e)
+bArray2e=np.array([.2,.4,.75])
+tau2e=bArray2e*tau0
+P2e=calcUs(rU=1/2,q=0,p=1.5,bArray=tau2e)
 IV2e,qA2e,pA2e,qfinalA2e,pfinalA2e=P2e
 
 #%% 2.F q,p=0,2
-bArray2f=np.array([.1,.25,.5])*tau0
-P2f=calcUs(rU=1/2,q=0,p=2,bArray=bArray2f)
+bArray2f=np.array([.1,.25,.5])
+tau2f=bArray2f*tau0
+P2f=calcUs(rU=1/2,q=0,p=2,bArray=tau2f)
 IV2f,qA2f,pA2f,qfinalA2f,pfinalA2f=P2f
+
+#%% Area of 2d
+
 
 #%% Plot 2d
 #width,height=SP.setupPlot(singleColumn=False)
@@ -122,7 +131,7 @@ ax2.plot(qA2d.T,pA2d.T,'k-')
 ax2.plot(IV2d[:,0],IV2d[:,1],'-o',label=r'$\tau=0$')
 for i in range(3):
   ax2.plot(qfinalA2d[i,:],pfinalA2d[i,:],'-o',
-           label=r'$\tau=$%1.2f'%bArray2d[i])
+           label=r'$\tau=%1.2f \tau_0$'%bArray2d[i])
 ax2.set_xlabel(r'$\theta$')
 #ax2.set_xlim(-np.pi,2.5)
 ax2.set_ylabel(r'$\dot{\theta}$')
@@ -143,7 +152,7 @@ ax3.plot(qA2e.T,pA2e.T,'k-')
 ax3.plot(IV2e[:,0],IV2e[:,1],'-o',label=r'$\tau=0$')
 for i in range(3):
   ax3.plot(qfinalA2e[i,:],pfinalA2e[i,:],'-o',
-           label=r'$\tau=$%1.2f'%bArray2e[i])
+           label=r'$\tau=%1.2f \tau_0$'%bArray2e[i])
 ax3.set_xlabel(r'$\theta$')
 #ax3.set_xlim(-np.pi,np.pi)
 ax3.set_ylabel(r'$\dot{\theta}$')
@@ -164,7 +173,7 @@ ax4.plot(qA2f.T,pA2f.T,'k-')
 ax4.plot(IV2f[:,0],IV2f[:,1],'-o',label=r'$\tau=0$')
 for i in range(3):
   ax4.plot(qfinalA2f[i,:],pfinalA2f[i,:],'-o',
-           label=r'$\tau=$%1.2f'%bArray2f[i])
+           label=r'$\tau=%1.2f \tau_0$'%bArray2f[i])
 ax4.set_xlabel(r'$\theta$')
 #ax4.set_xlim(-np.pi,np.pi)
 ax4.set_ylabel(r'$\dot{\theta}$')
