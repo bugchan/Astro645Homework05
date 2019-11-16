@@ -143,7 +143,8 @@ fig2 = plt.figure(figsize=(width,height))
 ax2 = fig2.add_subplot(grid[0,0])
 ax2.plot(qA2d.T,pA2d.T,'k-')
 for i in range(4):
-  ax2.plot(qfinalA2d[i,:],pfinalA2d[i,:],'-o',
+  ax2.plot(qfinalA2d[i,:],pfinalA2d[i,:],'o')
+  ax2.fill(qfinalA2d[i,:],pfinalA2d[i,:],'o',
            label=r'$\tau=%1.2f \tau_0$'%bArray2d[i])
 ax2.set_xlabel(r'$z_1$')
 #ax2.set_xlim(-np.pi,2.5)
@@ -162,7 +163,8 @@ fig3 = plt.figure(figsize=(width,height))
 ax3 = fig3.add_subplot(grid[0,0])
 ax3.plot(qA2e.T,pA2e.T,'k-')
 for i in range(4):
-  ax3.plot(qfinalA2e[i,:],pfinalA2e[i,:],'-o',
+  ax3.plot(qfinalA2e[i,:],pfinalA2e[i,:],'-o')
+  ax3.fill(qfinalA2e[i,:],pfinalA2e[i,:],'-o',
            label=r'$\tau=%1.2f \tau_0$'%bArray2e[i])
 ax3.set_xlabel(r'$z_1$')
 #ax3.set_xlim(-np.pi,np.pi)
@@ -181,7 +183,8 @@ fig4 = plt.figure(figsize=(width,height))
 ax4 = fig4.add_subplot(grid[0,0])
 ax4.plot(qA2f.T,pA2f.T,'k-')
 for i in range(4):
-  ax4.plot(qfinalA2f[i,:],pfinalA2f[i,:],'-o',
+  ax4.plot(qfinalA2f[i,:],pfinalA2f[i,:],'-o')
+  ax4.fill(qfinalA2f[i,:],pfinalA2f[i,:],'-o',
            label=r'$\tau=%1.2f \tau_0$'%bArray2f[i])
 ax4.set_xlabel(r'$z_1$')
 #ax4.set_xlim(-np.pi,np.pi)
@@ -227,3 +230,23 @@ with open('PendulumIV.tex','w') as tf:
     tf.write(df.to_latex(float_format='%2.2f',
                          index=True,
                          escape=False))
+    
+#%% Save Data to csv file
+
+#colNames2=(['$%1.2f\tau_0$'%bArray2d[0],
+#           '$%1.2f\tau_0$'%bArray2d[1],
+#           '$%1.2f\tau_0$'%bArray2d[2],
+#           '$%1.2f\tau_0$'%bArray2d[3]])
+#row1b=qfinalA2d.T
+#row2b=A2d
+#indexNames2=([np.arange(32),'Areas'])
+##row3=np.array([z1[2],z2[2],energy(z1[2],z2[2])])
+#
+#rows=row1b
+#
+#df = pd.DataFrame(rows,columns=colNames2)
+#
+#with open('Pendulum2d.tex','w') as tf:
+#    tf.write(df.to_latex(float_format='%2.2f',
+#                         index=True,
+#                         escape=False))
