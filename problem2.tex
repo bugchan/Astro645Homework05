@@ -62,7 +62,6 @@ we can find that the solution for this differential equation in the small angle 
 \frac{\Ddot{\theta}}{\omega^2}=    
 \end{equation*}
 
-
 then, we can show that
 $\tau_0=2\pi/\omega$.
 
@@ -70,7 +69,7 @@ $\tau_0=2\pi/\omega$.
 %Sketch the phase portrait in these units, paying special attention to
 % the three domains: 1) $\varepsilon<2$, the oscillation  or libration regime; 2) $\varepsilon>2$, the rotation regime 3)$\varepsilon=2$, the critical infinite period, the separatrix.
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics{CodeAndFigures/PendulumPhaseSpace.pdf}
     \caption{Phase Space of a pendulum in rotation ($\varepsilon>2$), libration ($\varepsilon<2$) and separatrix ($\varepsilon=2$).}
@@ -79,7 +78,7 @@ $\tau_0=2\pi/\omega$.
 
 We can integrate the pendulum's equation of motion \ref{eq:pendEqMotion} using a 4th order Runge-Kutta and the initial conditions listed in table \ref{tab:pendulumIV}.
 
-\begin{table}
+\begin{table}[h]
     \centering
     \input{CodeAndFigures/PendulumIV.tex}
     \caption{Initial conditions used for obtaining the phase-space of the pendulum for rotation, libration and separatrix.}
@@ -89,13 +88,16 @@ We can integrate the pendulum's equation of motion \ref{eq:pendEqMotion} using a
 Figure \ref{fig:pendPhaseSpace} shows the phase space in the three domains: rotation, libration and separatrix.
 
 \subsection{}
-Considering a disk-like of initial conditions enclosed within a circle centered at $(q,p)=(z_1,z_2)=(0,1)$ with radius of $1/2$ as shown in Figure \ref{fig:MartinsUs}
-\begin{figure}
+Considering a disk-like of initial conditions enclosed within a circle centered at $(q,p)=(z_1,z_2)=(0,1)$ with radius of $1/2$ as shown in Figure \ref{fig:MartinsUs}, we can compute the evolution of the disk from $\tau=0$ to each of $\tau=0.25\tau_0,0.5\tau_0,\mathrm{and}\tau_0$.
+\begin{figure}[h]
     \centering
     \includegraphics[width=\columnwidth]{CodeAndFigures/Fig1InitialConditionsUs.png}
-    %\caption{Caption}
-    \label{fig:my_label}
+    \caption{Initial conditions for $U_s$}
+    \label{fig:MartinsUs}
 \end{figure}
+
+Figure \ref{fig:pend2d} shows the evolution of 32 orbits equally spaced at different times obtained from 4th order Runge-Kutta integration. The color rings shows the final values of $(z_1,z_2)$ at the different stop times as shown. Note that the orbits are parallel through time and don't cross each other so we can argue that calculating the orbits at the edge of the disk put a constraint on orbits at any point inside the disk. 
+
 %Consider a disk-like domain of initial configurations $U_s$ enclosed
 % within the circle centered at $(q,p)=(z_1,z_2)=(0,1)$ with radius
 % of $1/2$ in these units. See Fig. 1 for a plot of these initial conditions. Compute the evolution of the disk from $\tau=0$ to each of $\tau=0.25\tau_0,0.5\tau_0,\mathrm{and}\tau_0$.
@@ -115,7 +117,7 @@ Considering a disk-like of initial conditions enclosed within a circle centered 
 %     \item For insight consider this problem in the small 
 %           angle limit. In this limit, the solution is 
 %           analytic. If you have any worries about your 
-%           solution, make sure it agrees with the small angle 
+%           solution, make sure it agrees with the small angle
 %           limit.
 %     \end{itemize}
 
