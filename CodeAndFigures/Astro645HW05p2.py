@@ -78,7 +78,7 @@ IV=np.concatenate((z1.reshape(3,1),z2.reshape(3,1)),
 
 a=0
 b=100
-h=0.1
+h=0.01
 N=round(b/h)
 
 #%% 2.C
@@ -143,8 +143,8 @@ fig2 = plt.figure(figsize=(width,height))
 ax2 = fig2.add_subplot(grid[0,0])
 ax2.plot(qA2d.T,pA2d.T,'k-')
 for i in range(4):
-  ax2.plot(qfinalA2d[i,:],pfinalA2d[i,:],'o')
-  ax2.fill(qfinalA2d[i,:],pfinalA2d[i,:],'o',
+  ax2.plot(qfinalA2d[i,:],pfinalA2d[i,:],'-o')
+  ax2.fill(qfinalA2d[i,:],pfinalA2d[i,:],'-o',
            label=r'$\tau=%1.2f \tau_0$'%bArray2d[i])
 ax2.set_xlabel(r'$z_1$')
 #ax2.set_xlim(-np.pi,2.5)
@@ -201,13 +201,14 @@ fig4.savefig('PendulumPhaseSpaceUs2f.pdf')
 fig5 = plt.figure(figsize=(width,height))
 
 ax5 = fig5.add_subplot(grid[0,0])
-ax5.plot(A2d,'-o',
+ax5.plot(bArray2d, A2d,'-o',
          label=r'(p,q)=(%1.1f,%1.1f)'%(qp2d[0],qp2d[1]))
-ax5.plot(A2e,'-o',
+ax5.plot(bArray2e,A2e,'-o',
          label=r'(p,q)=(%1.1f,%1.1f)'%(qp2e[0],qp2e[1]))
-ax5.plot(A2f,'-o',
+ax5.plot(bArray2f,A2f,'-o',
          label=r'(p,q)=(%1.1f,%1.1f)'%(qp2f[0],qp2f[1]))
 ax5.set_ylabel('Area')
+ax5.set_xlabel(r'$n\tau_0$')
 ax5.grid()
 ax5.legend()
 
@@ -233,20 +234,20 @@ with open('PendulumIV.tex','w') as tf:
     
 #%% Save Data to csv file
 
-#colNames2=(['$%1.2f\tau_0$'%bArray2d[0],
-#           '$%1.2f\tau_0$'%bArray2d[1],
-#           '$%1.2f\tau_0$'%bArray2d[2],
-#           '$%1.2f\tau_0$'%bArray2d[3]])
-#row1b=qfinalA2d.T
-#row2b=A2d
-#indexNames2=([np.arange(32),'Areas'])
-##row3=np.array([z1[2],z2[2],energy(z1[2],z2[2])])
-#
-#rows=row1b
-#
-#df = pd.DataFrame(rows,columns=colNames2)
-#
-#with open('Pendulum2d.tex','w') as tf:
-#    tf.write(df.to_latex(float_format='%2.2f',
-#                         index=True,
-#                         escape=False))
+colNames2=(['$%1.2f\tau_0$'%bArray2d[0],
+           '$%1.2f\tau_0$'%bArray2d[1],
+           '$%1.2f\tau_0$'%bArray2d[2],
+           '$%1.2f\tau_0$'%bArray2d[3]])
+row1b=qfinalA2d.T
+row2b=A2d
+indexNames2=([np.arange(32),'Areas'])
+#row3=np.array([z1[2],z2[2],energy(z1[2],z2[2])])
+
+rows=row1b
+
+df = pd.DataFrame(rows,columns=colNames2)
+
+with open('Pendulum2d.tex','w') as tf:
+    tf.write(df.to_latex(float_format='%2.2f',
+                         index=True,
+                         escape=False))
