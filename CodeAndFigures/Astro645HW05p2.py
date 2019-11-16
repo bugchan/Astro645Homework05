@@ -26,7 +26,7 @@ def energy(z1,z2):
 
 def calcUs(rU,q,p,bArray):
   start = time.time()
-  thetaU=np.linspace(0,2*np.pi,32)
+  thetaU=np.linspace(0,2*np.pi,64)
   q0=rU*np.cos(thetaU)+q
   p0=rU*np.sin(thetaU)+p
   lenq=len(q0)
@@ -105,7 +105,7 @@ ax1.grid()
 ax1.legend()
 
 fig1.tight_layout()
-fig1.savefig('PendulumPhaseSpace.pdf')
+#fig1.savefig('PendulumPhaseSpace.pdf')
 
 #%% 2.D q,p=0,1
 l=1
@@ -153,7 +153,8 @@ ax2.grid()
 ax2.legend()
 
 fig2.tight_layout()
-fig2.savefig('PendulumPhaseSpaceUs2d.pdf')
+#fig2.savefig('PendulumPhaseSpaceUs2d.pdf')
+fig2.savefig('PendulumPhaseSpaceUs2d64p.pdf')
 
 #%% Plot 2e
 #width,height=SP.setupPlot(singleColumn=False)
@@ -173,7 +174,8 @@ ax3.grid()
 ax3.legend()
 
 fig3.tight_layout()
-fig3.savefig('PendulumPhaseSpaceUs2e.pdf')
+#fig3.savefig('PendulumPhaseSpaceUs2e.pdf')
+fig3.savefig('PendulumPhaseSpaceUs2e64p.pdf')
 
 #%% Plot 2f
 #width,height=SP.setupPlot(singleColumn=False)
@@ -193,7 +195,8 @@ ax4.grid()
 ax4.legend()
 
 fig4.tight_layout()
-fig4.savefig('PendulumPhaseSpaceUs2f.pdf')
+#fig4.savefig('PendulumPhaseSpaceUs2f.pdf')
+fig4.savefig('PendulumPhaseSpaceUs2f64p.pdf')
 
 #%% Plot 2g
 #width,height=SP.setupPlot(singleColumn=False)
@@ -213,41 +216,42 @@ ax5.grid()
 ax5.legend()
 
 fig5.tight_layout()
-fig5.savefig('PendulumPhaseSpaceAreas.pdf')
+#fig5.savefig('PendulumPhaseSpaceAreas.pdf')
+fig5.savefig('PendulumPhaseSpaceAreas64p.pdf')
 
-#%% Save Data to csv file
-
-colNames=np.array(['$z_1$','$z_2$','Energy'])
-row1=np.array([z1[0],z2[0],energy(z1[0],z2[0])])
-row2=np.array([z1[1],z2[1],energy(z1[1],z2[1])])
-row3=np.array([z1[2],z2[2],energy(z1[2],z2[2])])
-
-rows=[row1,row2,row3]
-
-df = pd.DataFrame(rows,columns=colNames,
-                  index=indexNames)
-
-with open('PendulumIV.tex','w') as tf:
-    tf.write(df.to_latex(float_format='%2.2f',
-                         index=True,
-                         escape=False))
-    
-#%% Save Data to csv file
-
-colNames2=(['$%1.2f\tau_0$'%bArray2d[0],
-           '$%1.2f\tau_0$'%bArray2d[1],
-           '$%1.2f\tau_0$'%bArray2d[2],
-           '$%1.2f\tau_0$'%bArray2d[3]])
-row1b=qfinalA2d.T
-row2b=A2d
-indexNames2=([np.arange(32),'Areas'])
+##%% Save Data to csv file
+#
+#colNames=np.array(['$z_1$','$z_2$','Energy'])
+#row1=np.array([z1[0],z2[0],energy(z1[0],z2[0])])
+#row2=np.array([z1[1],z2[1],energy(z1[1],z2[1])])
 #row3=np.array([z1[2],z2[2],energy(z1[2],z2[2])])
-
-rows=row1b
-
-df = pd.DataFrame(rows,columns=colNames2)
-
-with open('Pendulum2d.tex','w') as tf:
-    tf.write(df.to_latex(float_format='%2.2f',
-                         index=True,
-                         escape=False))
+#
+#rows=[row1,row2,row3]
+#
+#df = pd.DataFrame(rows,columns=colNames,
+#                  index=indexNames)
+#
+#with open('PendulumIV.tex','w') as tf:
+#    tf.write(df.to_latex(float_format='%2.2f',
+#                         index=True,
+#                         escape=False))
+#    
+##%% Save Data to csv file
+#
+#colNames2=(['$%1.2f\tau_0$'%bArray2d[0],
+#           '$%1.2f\tau_0$'%bArray2d[1],
+#           '$%1.2f\tau_0$'%bArray2d[2],
+#           '$%1.2f\tau_0$'%bArray2d[3]])
+#row1b=qfinalA2d.T
+#row2b=A2d
+#indexNames2=([np.arange(32),'Areas'])
+##row3=np.array([z1[2],z2[2],energy(z1[2],z2[2])])
+#
+#rows=row1b
+#
+#df = pd.DataFrame(rows,columns=colNames2)
+#
+#with open('Pendulum2d.tex','w') as tf:
+#    tf.write(df.to_latex(float_format='%2.2f',
+#                         index=True,
+#                         escape=False))
